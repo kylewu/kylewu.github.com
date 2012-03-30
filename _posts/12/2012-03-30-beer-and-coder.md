@@ -7,8 +7,7 @@ tags: []
 ---
 {% include JB/setup %}
 
-<img src="http://cdn.shopify.com/s/files/1/0051/4802/products/MG_0853.jpg" width=600>
-[github]
+![beer](http://icons.iconarchive.com/icons/iconshock/real-vista-food/256/beer-icon.png)
 
 > Beer is the world's most widely consumed alcoholic beverage; it is the
 > third most popular drink overall, after water and tea.[[wiki:beer]]
