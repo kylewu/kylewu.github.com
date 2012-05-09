@@ -7,8 +7,10 @@ tags: [b2g, gaia]
 ---
 {% include JB/setup %}
 
+<img src='/assets/images/b2g.jpg' alt='b2g' style="float:right;"/>
+
 Vagrant
-==========
+---------
 
 Personally, I prefer working with [Vagrant]. Thanks to
 @rhelmer, here is his repo [b2g-vagrant]. It contains a vagrant configure file and
@@ -16,17 +18,17 @@ puppet file. The README file is quite comprehensive, but please notice, it will
 download a box file over 10G when you run *vagrant up* the first time.
 
 SSH directly to VM
-==========
+---------
 
 Vagrant provides a clean way to develop, however, it is not convenient to
 connect to VM. I have to go to the vagrant folder and *vagrant ssh*.
-[vagrant-proxyssh] is a hack to use *ssh* directly from cml. If you do not like
+[vagrant-proxyssh] is a hack to use *ssh* directly from command line. If you do not like
 to install it, copy and paste the following words into your *~/.ssh/config*
 
 <script src="https://gist.github.com/2641244.js"> </script>
 
 SSHFS
-======
+---------
 
 Now, I can use *ssh vagrant* to connect to VM directly. I also would like to mount
 remote folder to local machine using [sshfs]. 
@@ -35,12 +37,12 @@ The command is quite simple:
 	*sshfs vagrant:/home/vagrant/src/B2G/gaia ~/gaia -oauto_cache,reconnect,defer_permissions,negative_vncache,volname=gaia*
 
 Host Gaia in Apache 
-===========
+---------
 
-In the end, let us see how to host gaia in Apache (All the folling part comes from
+Next, let us see how to host gaia in Apache (All the code in this part comes from
 [gaia-hacking], I just make it short)
 
-Connect to VM first and install apache2
+Install apache2 in VM
 
 	sudo apt-get install apache2
 
@@ -60,15 +62,16 @@ Run the following commands in order
 	sudo a2ensite gaiamobile.org
 	sudo apache2ctl graceful
 
-We need to modify Vagrant configure file t visit apache from local machine. Add
-the next line in *Vagrant*
+We need to modify Vagrant configure file to visit apache from local machine. Add
+the next line in Vagrant configure file
 
 	config.vm.forward_port 80, 4567
 
-And run *vagrant reload*. Then we can visit 127.0.0.1:4567, and it will show *It
-works* page.
+And run *vagrant reload*. Then we can visit 127.0.0.1:4567, and it will show *'It
+works'* page.
 
-To see real gaia interface, add following lines in */etc/hosts*
+To see real gaia interface, add following lines in */etc/hosts*, and open
+*homescreen.gaiamobile.org*
 
 	127.0.0.1     gaiamobile.org 
 	127.0.0.1     homescreen.gaiamobile.org
@@ -96,19 +99,26 @@ To see real gaia interface, add following lines in */etc/hosts*
 For more detail about hacking Gaia, please go to [gaia-hacking].
 
 Mac-B2G-Desktop
-========
+---------
 
 If you are a lazy man like me and you are using Mac, maybe you like to have a
 working B2G browser. @pauljt provides a build of b2g desktop for Mac OS in
 [mac-b2g-desktop].
 
-Finish
-=======
+Gaia
+-------
 
-The develop enviroment is built. Have fun.
+All previous work is to prepare the dev env. It is time to meet Gaia.
 
-P.S. Do not forget to *make profile* first in Gaia and provide profile location
-when you start browser.
+Go to Gaia folder and modify Makefile. Set *DEBUG* to	1 and *Port* to 4567. Then
+run *make*. It will do a lot of work and what we need is the profile it
+generates.
+
+That's all. Open your browser with the profile we just get
+	
+	/Applications/B2G.app/Contents/MacOS/b2g -profile ~/gaia/profile
+
+We will get the window just like the image in the beginning in this post.
 
 [Vagrant]: http://vagrantup.com/
 [b2g-vagrant]: https://github.com/rhelmer/b2g-vagrant/
